@@ -27,7 +27,7 @@ def novel(request, id):
     for matcher in matchers:
 
         for i, line in enumerate(file_lines):
-            file_lines[i]['text'] = line['text'].replace(matcher.match, matcher.actor.name)
+            file_lines[i]['text'] = line['text'].replace(matcher.match, f'{matcher.prefix}{matcher.actor.name}')
 
     return render(request, 'novel.twig', {
         'novel': novel,
