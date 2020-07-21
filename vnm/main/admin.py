@@ -8,11 +8,14 @@ class MatcherInline(admin.StackedInline):
     extra = 0
 
 class NovelAdmin(admin.ModelAdmin):
-    list_display = ('title', 'file')
+    list_display = ('get_title', 'file')
 
     inlines = [
         MatcherInline,
     ]
+
+    def get_title(self, obj):
+        return obj.title or obj.file.name
 
 class ActorAdmin(admin.ModelAdmin):
     list_display = ('name', )

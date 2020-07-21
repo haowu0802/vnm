@@ -2,11 +2,24 @@
 
 {% block content %}
     {% if novels %}
-        <ul>
-        {% for novel in novels %}
-            <li><a href="{% url 'novel' id=novel.id %}">{% firstof novel.title novel.file.name %}</a></li>
-        {% endfor %}
-        </ul>
+
+    <table class="table table-borderless">
+        <thead>
+        <tr>
+            <th>Title</th>
+            <th>Size</th>
+        </tr>
+        </thead>
+        <tbody>
+            {% for novel in novels %}
+            <tr>
+                <td><a href="{% url 'novel' id=novel.id %}">{% firstof novel.title novel.file.name %}</a></td>
+                <td>{{ novel.file.size }}</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+
     {% else %}
         <p>No documents.</p>
     {% endif %}
