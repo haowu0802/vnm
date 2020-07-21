@@ -6,12 +6,30 @@ from django.template import RequestContext
 from django.http import HttpResponseRedirect
 from django.urls import reverse
 
-from .models import Novel
+from .models import Novel, Matcher
+
+from pprint import pprint
 
 def index(request):
-    # Load documents for the list page
     novels = Novel.objects.all()
 
     return render(request, 'list.twig', {
         'novels': novels,
+    })
+
+def novel(request, id):
+    novel = Novel.objects.get(id=id)
+    matchers = Matcher.objects.filter(novel=novel)
+
+    file_lines = novel.file.readlines()
+    file_lines = [ line.decode("utf-8") for line in file_lines ]
+
+    for matcher in matchers:
+
+        for i, line in enumerate(file_lines):
+            file_lines[i] = line.replace(matcher.match, matcher.actor.name)
+
+    return render(request, 'novel.twig', {
+        'novel': novel,
+        'content': file_lines,
     })

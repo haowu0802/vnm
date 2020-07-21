@@ -21,6 +21,7 @@ from main import views
 
 urlpatterns = [
     path('', views.index, name='index'),
+    path('novel/<int:id>/', views.novel, name="novel"),
     path('admin/', admin.site.urls),
 ]
 

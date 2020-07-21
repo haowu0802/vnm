@@ -9,7 +9,7 @@
     {% if novels %}
         <ul>
         {% for novel in novels %}
-            <li><a href="{{ novel.file.url }}">{{ novel.title }}</a></li>
+            <li><a href="{% url 'novel' id=novel.id %}">{{ novel.title }}</a></li>
         {% endfor %}
         </ul>
     {% else %}
