@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="utf-8">
+        <title>Visual Novel Maker</title>   
+    </head>
+    <body>
+    <!-- List of uploaded documents -->
+    {% if novels %}
+        <ul>
+        {% for novel in novels %}
+            <li><a href="{{ novel.file.url }}">{{ novel.title }}</a></li>
+        {% endfor %}
+        </ul>
+    {% else %}
+        <p>No documents.</p>
+    {% endif %}
+    </body>
+</html> 
