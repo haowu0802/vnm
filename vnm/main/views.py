@@ -22,12 +22,12 @@ def novel(request, id):
     matchers = Matcher.objects.filter(novel=novel)
 
     file_lines = novel.file.readlines()
-    file_lines = [ line.decode("utf-8") for line in file_lines ]
+    file_lines = [ {'n':n, 'text': line.decode("utf-8")} for n, line in enumerate(file_lines) ]
 
     for matcher in matchers:
 
         for i, line in enumerate(file_lines):
-            file_lines[i] = line.replace(matcher.match, matcher.actor.name)
+            file_lines[i]['text'] = line['text'].replace(matcher.match, matcher.actor.name)
 
     return render(request, 'novel.twig', {
         'novel': novel,

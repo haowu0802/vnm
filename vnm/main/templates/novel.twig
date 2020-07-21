@@ -1,8 +1,8 @@
 {% extends 'base.twig' %}
 
 {% block content %}
-    <a href="{% url 'index' %}">Index</a><br>
     {% for line in content %}
-        <span>{{ line }}</span><br>
+        <span>[{{ line.n }}]{{ line.text }}</span>
+        <br>
     {% endfor %}
 {% endblock %}
