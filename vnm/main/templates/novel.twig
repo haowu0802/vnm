@@ -1,8 +1,27 @@
 {% extends 'base.twig' %}
 
 {% block content %}
-    {% for line in content %}
-        <span>[{{ line.n }}]{{ line.text }}</span>
-        <br>
-    {% endfor %}
+
+    <div class="wrapper">
+
+        <!-- Sidebar -->
+        <nav id="sidebar">
+            <div id="image-box">
+                <img src="/media/documents/2020/07/23/2020-02-07_083647.png">
+            </div>
+        </nav>
+
+        <!-- Page Content -->
+        <div id="content">
+
+            <!-- We'll fill this with dummy content -->
+            {% for line in content %}
+                <span>[{{ line.n }}]{{ line.text }}</span>
+                <br>
+            {% endfor %}
+        </div>
+
+    </div>
+
+
 {% endblock %}
