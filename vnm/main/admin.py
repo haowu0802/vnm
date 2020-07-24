@@ -1,6 +1,6 @@
 from django.contrib import admin
 
-from .models import Novel, Actor, Matcher
+from .models import Novel, Actor, Matcher, Image
 
 class MatcherInline(admin.StackedInline):
     model = Matcher
@@ -23,3 +23,4 @@ class ActorAdmin(admin.ModelAdmin):
 # Register your models here.
 admin.site.register(Novel, NovelAdmin)
 admin.site.register(Actor, ActorAdmin)
+admin.site.register(Image)

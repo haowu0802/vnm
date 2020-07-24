@@ -6,7 +6,7 @@
 
         <!-- Sidebar -->
         <nav id="sidebar">
-            <img src="/media/documents/2020/07/23/2020-02-07_083647.png">
+            <img id="panel_image" src="">
         </nav>
 
         <!-- Page Content -->
@@ -21,6 +21,9 @@
         </div>
 
     </div>
+
+
+    {{ images|json_script:"images" }}
 
 
 {% endblock %}

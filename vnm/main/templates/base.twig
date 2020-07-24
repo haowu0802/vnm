@@ -64,11 +64,27 @@
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/js/bootstrap.min.js" integrity="sha384-OgVRvuATP1z7JjHLkuOU7Xw704+h835Lr+6QL9UvYjZE3Ipu6Tp75j7Bh/kR0JKI" crossorigin="anonymous"></script>
 
     <script type="text/javascript">
+
+        // parse image set from context
+        var images_string = JSON.parse(document.getElementById('images').textContent);
+        var images_json = JSON.parse(images_string)
+
+        // load a random image
+        function loadImage(){
+            var img_url = images_json[Math.floor(Math.random() * images_json.length)];
+            $("#panel_image").attr("src", img_url);
+        }
+
         $(document).ready(function () {
             $('#sidebarCollapse').on('click', function () {
                 $('#sidebar').toggleClass('active');
             });
+
+            // load image every x seconds
+            setInterval(loadImage, 5000);
+            loadImage();
         });
+
     </script>
 
   </body>

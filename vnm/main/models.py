@@ -15,6 +15,15 @@ class Actor(models.Model):
         return self.name
 
 
+class Image(models.Model):
+    title = models.CharField(max_length=256, blank=True, null=True)
+    file = models.FileField(upload_to='images/%Y/%m/%d')
+    actor = models.ForeignKey(Actor, related_name='images', on_delete=models.CASCADE)
+
+    def __str__(self):
+        return self.file.url
+
+
 class Matcher(models.Model):
     match = models.CharField(max_length=256)
     prefix = models.CharField(max_length=256, blank=True, null=True)
