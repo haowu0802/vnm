@@ -35,10 +35,10 @@ class Matcher(models.Model):
     match = models.CharField(max_length=256)
     prefix = models.CharField(max_length=256, blank=True, null=True)
     actor = models.ForeignKey(Actor, on_delete=models.CASCADE)
-    novel = models.ForeignKey(Novel, on_delete=models.CASCADE)
+    novel = models.ForeignKey(Novel, related_name='matchers', on_delete=models.CASCADE)
 
     def __str__(self):
-        return self.match
+        return self.actor.name
 
 class Tag(models.Model):
     name = models.CharField(max_length=256)

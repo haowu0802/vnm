@@ -8,12 +8,12 @@ from django.template import RequestContext
 from django.http import HttpResponseRedirect
 from django.urls import reverse
 
-from .models import Novel, Matcher
+from .models import Novel, Matcher, Tag
 
 from pprint import pprint
 
 def index(request):
-    novels = Novel.objects.all()
+    novels = Novel.objects.order_by('-id').all()
 
     return render(request, 'list.twig', {
         'novels': novels,
@@ -36,6 +36,9 @@ def novel(request, id):
             line_decoded = line.decode("gb18030")
         file_lines_decoded.append({'n':n, 'text': line_decoded}) 
 
+    # tags
+    tags = Tag.objects.order_by('weight').all()
+
     # match the actors to novel characters
     images = []
     for matcher in matchers:
@@ -45,10 +48,22 @@ def novel(request, id):
         # construct actor image sets
         images += matcher.actor.images.all()
 
-    images_urls = [image.file.url for image in images]
+    # tags->images
+    tags_image_urls = []
+    for idx, tag in enumerate(tags):
+        image_urls = []
+        for image in images:
+            if tag in image.tags.all():
+                image_urls.append(image.file.url)
+        tags_image_urls.append({
+            'tag': tag.name,
+            'idx': idx,
+            'image_urls': image_urls,
+        })
 
     return render(request, 'novel.twig', {
         'novel': novel,
         'content': file_lines_decoded,
-        'images': json.dumps(images_urls),
+        'images': json.dumps(tags_image_urls),
+        'tags': tags_image_urls,
     })

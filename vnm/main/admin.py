@@ -3,23 +3,18 @@ from django.contrib import admin
 from .models import Novel, Actor, Matcher, Image, Tag
 
 class TagListFilter(admin.SimpleListFilter):
-    
     title = 'Has tag'
-
     parameter_name = 'has_tag'
 
     def lookups(self, request, model_admin):
-
         return (
             ('yes', 'Yes'),
             ('no',  'No'),
         )
 
     def queryset(self, request, queryset):
-
         if self.value() == 'yes':
             return queryset.filter(tags__isnull=False)
-
         if self.value() == 'no':
             return queryset.filter(tags__isnull=True)
 
@@ -47,7 +42,6 @@ class ImageAdmin(admin.ModelAdmin):
     readonly_fields = ['image_tag']
 
     list_filter = [TagListFilter,]
-
 
     def get_tags(self, obj):
         return ", ".join([tag.name for tag in obj.tags.all()])

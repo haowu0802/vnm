@@ -49,7 +49,18 @@
   <body>
 
     <nav class="navbar fixed-top navbar-light bg-light py-0">
+
         <a class="navbar-brand" href="{% url 'index' %}">Index</a>
+
+        <ul class="nav nav-tabs nav-justified md-tabs indigo" id="tags" role="tablist">
+            {% for tag in tags %}
+                <li class="nav-item">
+                    <a class="nav-link" data-toggle="tab" href="#" role="tab" idx={{tag.idx}} aria-controls="home-just"
+                    aria-selected="true">{{ tag.tag }}</a>
+                </li>
+            {% endfor %}
+        </ul>
+
         <button type="button" id="sidebarCollapse" class="btn btn-info">
             <i class="fas fa-align-left"></i>
         </button>
@@ -71,7 +82,10 @@
 
         // load a random image
         function loadImage(){
-            var img_url = images_json[Math.floor(Math.random() * images_json.length)];
+            var tag = $("ul#tags li a.active");
+            var idx = tag.attr('idx');
+            var tag_images = images_json[idx]['image_urls']
+            var img_url = tag_images[Math.floor(Math.random() * tag_images.length)];
             $("#panel_image").attr("src", img_url);
         }
 
@@ -81,7 +95,7 @@
             });
 
             // load image every x seconds
-            setInterval(loadImage, 20000);
+            setInterval(loadImage, 5000);
             loadImage();
         });
 

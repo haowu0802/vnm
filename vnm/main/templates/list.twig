@@ -7,6 +7,7 @@
         <thead>
         <tr>
             <th>Title</th>
+            <th>Actors</th>
             <th>Size</th>
         </tr>
         </thead>
@@ -14,6 +15,11 @@
             {% for novel in novels %}
             <tr>
                 <td><a href="{% url 'novel' id=novel.id %}">{% firstof novel.title novel.file.name %}</a></td>
+                <td>
+                    {% for actor in novel.matchers.all %}
+                        {{ actor }},
+                    {% endfor %}
+                </td>
                 <td>{{ novel.file.size }}</td>
             </tr>
             {% endfor %}
