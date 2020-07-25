@@ -18,11 +18,16 @@
     .wrapper {
         width: 100%;
     }
+    .nav-item{
+        font-size: 12px;
+    }
     #sidebar {
         height: 50vh;
+        width: 100%;
         transition: all 0.3s;
         overflow: hidden;
         position: fixed;
+        text-align: center;
     }
     #sidebar.active {
         margin-top: -50vh;
@@ -95,7 +100,7 @@
             });
 
             // load image every x seconds
-            setInterval(loadImage, 5000);
+            setInterval(loadImage, 15000);
             loadImage();
         });
 
