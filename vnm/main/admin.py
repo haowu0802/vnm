@@ -41,7 +41,7 @@ class ImageAdmin(admin.ModelAdmin):
     list_display = ('image_tag', 'actor', 'get_tags', 'file')
     readonly_fields = ['image_tag']
 
-    list_filter = [TagListFilter,]
+    list_filter = [TagListFilter, 'actor', 'tags']
 
     def get_tags(self, obj):
         return ", ".join([tag.name for tag in obj.tags.all()])
