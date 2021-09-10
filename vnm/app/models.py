@@ -2,31 +2,34 @@
 # -*- coding: utf-8 -*- 
 import uuid
 from django.db import models
-from imagekit.models import ProcessedImageField
-from imagekit.processors import ResizeToFit
+from imagekit.models import ProcessedImageField, ImageSpecField
+from imagekit.processors import ResizeToFit, ResizeToFill
 
 class Actor(models.Model):
-    title = models.CharField(max_length=70)
-    description = models.TextField(max_length=1024)
-    thumb = ProcessedImageField(upload_to='actors', processors=[ResizeToFit(300)], format='JPEG', options={'quality': 90})
-    tags = models.CharField(max_length=250)
-    is_visible = models.BooleanField(default=True)
+    name = models.CharField(max_length=70)
+    avatar = models.ImageField(upload_to='actors')
+    thumb = ImageSpecField(source='avatar',
+        processors=[ResizeToFill(200, 200)],
+        format='JPEG',
+        options={'quality': 90})
     created = models.DateTimeField(auto_now_add=True)
     modified = models.DateTimeField(auto_now_add=True)
     slug = models.SlugField(max_length=50, unique=True)
 
-    #def get_absolute_url(self):
-    #    return reverse('actor', kwargs={'slug':self.slug})
-
     def __unicode__(self):
-        return self.title
+        return self.name
 
 class ActorImage(models.Model):
-    image = ProcessedImageField(upload_to='actors', processors=[ResizeToFit(1280)], format='JPEG', options={'quality': 70})
-    thumb = ProcessedImageField(upload_to='actors', processors=[ResizeToFit(300)], format='JPEG', options={'quality': 80})
+    image = ProcessedImageField(upload_to='images',
+        processors=[ResizeToFill(1768, 992)],
+        format='JPEG',
+        options={'quality': 100})
+    thumb = ImageSpecField(source='image',
+        processors=[ResizeToFill(400, 400)],
+        format='JPEG',
+        options={'quality': 90})
     actor = models.ForeignKey('actor', on_delete=models.PROTECT)
-    alt = models.CharField(max_length=255, default=uuid.uuid4)
     created = models.DateTimeField(auto_now_add=True)
-    width = models.IntegerField(default=0)
-    height = models.IntegerField(default=0)
+    width = models.IntegerField(default=1768)
+    height = models.IntegerField(default=992)
     slug = models.SlugField(max_length=70, default=uuid.uuid4, editable=False)

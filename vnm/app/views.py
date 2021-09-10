@@ -8,7 +8,7 @@ from django.views.generic import DetailView
 from app.models import Actor, ActorImage
 
 def gallery(request):
-    list = Actor.objects.filter(is_visible=True).order_by('-created')
+    list = Actor.objects.all().order_by('-created')
     paginator = Paginator(list, 10)
 
     page = request.GET.get('page')

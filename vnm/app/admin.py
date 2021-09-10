@@ -18,8 +18,8 @@ from app.forms import ActorForm
 @admin.register(Actor)
 class ActorModelAdmin(admin.ModelAdmin):
     form = ActorForm
-    prepopulated_fields = {'slug': ('title',)}
-    list_display = ('title', 'thumb')
+    prepopulated_fields = {'slug': ('name',)}
+    list_display = ('name', 'thumb')
     list_filter = ('created',)
 
     def save_model(self, request, obj, form, change):
@@ -57,5 +57,5 @@ class ActorModelAdmin(admin.ModelAdmin):
 # In case image should be removed from Actor.
 @admin.register(ActorImage)
 class ActorImageModelAdmin(admin.ModelAdmin):
-    list_display = ('alt', 'actor')
+    list_display = ('actor', )
     list_filter = ('actor', 'created')
