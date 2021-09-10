@@ -1,0 +1,44 @@
+{% extends "layout.html" %}
+{% load static %}
+
+{% block content %}
+
+<div class="container">
+    <div class="row">
+        {% for actor in actors %}
+
+        <div class="col">
+            <div class="card dpg-album-card">
+                <div class="card-image">
+                    <img src="{{ actor.thumb.url }}" alt="{{ actor.title }}" class="dpg-album-card-image" />
+                </div>
+                <div class="card-content">
+                    <span class="card-title">{{ actor.title }}</span>
+                    <p>{{ actor.description|truncatechars:120 }}</p>
+                </div>
+                <div class="card-action">
+                    <a href="{% url 'actor' actor.slug %}">
+                        More Images
+                    </a>
+                </div>
+            </div>
+        </div>
+
+        {% endfor %}
+
+    </div>
+</div>
+
+<div class="pagination center">
+    <span class="step-links">
+        {% if actors.has_previous %}
+        <a href="?page={{ actors.previous_page_number }}" class="waves-effect waves-light btn btn-large">Previous</a>
+        {% endif %}
+
+        {% if actors.has_next %}
+        <a href="?page={{ actors.next_page_number }}" class="waves-effect waves-light btn btn-large">Next</a>
+        {% endif %}
+    </span>
+</div>
+
+{% endblock %}

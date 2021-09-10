@@ -1,0 +1,34 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"> {% load static %} {% include 'material/includes/material_css.html' %}
+    <link rel="stylesheet" href="{% static 'site.css' %}" type="text/css" /> {% block css %}{% endblock %}
+</head>
+
+<body>
+    <nav role="navigation">
+        <div class="nav-wrapper container">
+            <a id="logo-container" href={% url 'gallery' %} class="brand-logo">Visual Novel Maker</a>
+        </div>
+    </nav>
+
+    {% block content %}{% endblock %}
+
+    <footer class="page-footer">
+        <div class="footer-copyright">
+            <div class="container">
+                © 2017 Copyright Free - Sharing is Caring
+            </div>
+        </div>
+    </footer>
+
+    <script src="{% static 'material/js/jquery-2.2.0.js' %}"></script>
+    <!-- <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.98.0/js/materialize.min.js"></script> -->
+    {% include 'material/includes/material_js.html' %}
+    <script src="{% static 'app.js' %}"></script> {% block js %}{% endblock %}
+</body>
+
+</html>
