@@ -51,7 +51,6 @@ def actor(request, name):
                 height=height,
                 created=getmtime(filepath),
             )
-            print(im, width, height, act, filename, getmtime(filepath))
             photo.image.save(basename(filepath), content=File(open(filepath, 'rb')))
             photo.save()
 
