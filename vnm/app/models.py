@@ -6,30 +6,29 @@ from imagekit.models import ProcessedImageField, ImageSpecField
 from imagekit.processors import ResizeToFit, ResizeToFill
 
 class Actor(models.Model):
-    name = models.CharField(max_length=70)
-    avatar = models.ImageField(upload_to='actors')
+    name = models.CharField(max_length=128)
+    avatar = models.ImageField(upload_to='actors', null=True)
     thumb = ImageSpecField(source='avatar',
         processors=[ResizeToFill(200, 200)],
         format='JPEG',
         options={'quality': 90})
     created = models.DateTimeField(auto_now_add=True)
     modified = models.DateTimeField(auto_now_add=True)
-    slug = models.SlugField(max_length=50, unique=True)
 
-    def __unicode__(self):
+    def __str__(self):
         return self.name
 
 class ActorImage(models.Model):
-    image = ProcessedImageField(upload_to='images',
-        processors=[ResizeToFill(1768, 992)],
-        format='JPEG',
-        options={'quality': 100})
+    image = models.ImageField(upload_to='images', null=True)
     thumb = ImageSpecField(source='image',
         processors=[ResizeToFill(400, 400)],
         format='JPEG',
-        options={'quality': 90})
-    actor = models.ForeignKey('actor', on_delete=models.PROTECT)
+        options={'quality': 50})
+    actor = models.ForeignKey('actor', on_delete=models.PROTECT, null=True)
     created = models.DateTimeField(auto_now_add=True)
     width = models.IntegerField(default=1768)
     height = models.IntegerField(default=992)
-    slug = models.SlugField(max_length=70, default=uuid.uuid4, editable=False)
+    filename = models.CharField(max_length=256, null=True, blank=True)
+
+    def __str__(self):
+        return f'{self.filename}'

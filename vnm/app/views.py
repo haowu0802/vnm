@@ -1,7 +1,9 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-  
 from os import listdir
-from os.path import isfile, join
+from os.path import isfile, join, getmtime, basename
+
+from PIL import Image
 
 from django.conf import settings
 
@@ -9,36 +11,53 @@ from django.shortcuts import render
 from django.http import HttpRequest
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 from django.views.generic import DetailView
+from django.core.files import File
 
 from app.models import Actor, ActorImage
 
-def gallery(request):
-    list = Actor.objects.all().order_by('-created')
-    paginator = Paginator(list, 10)
-
-    page = request.GET.get('page')
-    try:
-        actors = paginator.page(page)
-    except PageNotAnInteger:
-        actors = paginator.page(1) # If page is not an integer, deliver first page.
-    except EmptyPage:
-        actors = paginator.page(paginator.num_pages) # If page is out of range (e.g.  9999), deliver last page of results.
-
-    return render(request, 'gallery.html', { 'actors': list })
-
-
 def actors(request):
-    """this view loads data from local hd
+    """loads list of available image sets from a local path
     """
     actor_list = [f for f in listdir(settings.LOCAL_PATH) if not isfile(join(settings.LOCAL_PATH, f))]
     return render(request, 'actors.twig', { 'actors': actor_list })
 
 
+# local image listing view
 def actor(request, name):
-    print(name)
-    images = []
+    # create actor if not exist
+    act, created = Actor.objects.get_or_create(
+        name=name,
+    )
+    if created:
+        act = Actor.objects.get(name=name)
+
+    # get local image path from settings and fetch file list
+    dir_path = join(settings.LOCAL_PATH, name)
+    file_list = [f for f in listdir(dir_path) if isfile(join(dir_path, f))]
+
+    # create image objects
+    for filename in file_list:
+        filepath = join(dir_path, filename)
+
+        if not ActorImage.objects.filter(filename=filename).exists():
+            # get image dim
+            im = Image.open(filepath)
+            width, height = im.size
+            # instantiate
+            photo = ActorImage(
+                filename=filename,
+                actor=act,
+                width=width,
+                height=height,
+                created=getmtime(filepath),
+            )
+            print(im, width, height, act, filename, getmtime(filepath))
+            photo.image.save(basename(filepath), content=File(open(filepath, 'rb')))
+            photo.save()
+
     return render(request, 'actor.twig', {
-        'images': images,
+        'actor': act,
+        'images': ActorImage.objects.filter(actor=act).all(),
     })
 
 

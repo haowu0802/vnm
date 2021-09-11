@@ -18,9 +18,8 @@ from app.forms import ActorForm
 @admin.register(Actor)
 class ActorModelAdmin(admin.ModelAdmin):
     form = ActorForm
-    prepopulated_fields = {'slug': ('name',)}
-    list_display = ('name', 'thumb')
-    list_filter = ('created',)
+    #list_display = ('name', 'thumb')
+    #list_filter = ('created',)
 
     def save_model(self, request, obj, form, change):
         if form.is_valid():
@@ -28,34 +27,9 @@ class ActorModelAdmin(admin.ModelAdmin):
             actor.modified = datetime.now()
             actor.save()
 
-            if form.cleaned_data['zip'] != None:
-                zip = zipfile.ZipFile(form.cleaned_data['zip'])
-                for filename in sorted(zip.namelist()):
-
-                    file_name = os.path.basename(filename)
-                    if not file_name:
-                        continue
-
-                    data = zip.read(filename)
-                    contentfile = ContentFile(data)
-
-                    img = ActorImage()
-                    img.actor = actor
-                    img.alt = filename
-                    filename = '{0}{1}.jpg'.format(actor.slug, str(uuid.uuid4())[-13:])
-                    img.image.save(filename, contentfile)
-                
-                    filepath = '{0}/actors/{1}'.format(django_photo_gallery.settings.MEDIA_ROOT, filename)
-                    with Image.open(filepath) as i:
-                        img.width, img.height = i.size
-
-                    img.thumb.save('thumb-{0}'.format(filename), contentfile)
-                    img.save()
-                zip.close() 
-            super(ActorModelAdmin, self).save_model(request, obj, form, change)
-
 # In case image should be removed from Actor.
 @admin.register(ActorImage)
 class ActorImageModelAdmin(admin.ModelAdmin):
-    list_display = ('actor', )
-    list_filter = ('actor', 'created')
+    #list_display = ('actor', )
+    #list_filter = ('actor', 'created')
+    pass

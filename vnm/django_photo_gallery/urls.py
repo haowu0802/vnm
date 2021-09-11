@@ -15,11 +15,10 @@ from django.contrib import admin
 admin.autodiscover()
 
 urlpatterns = [
-    path('', app.views.gallery, name='gallery'),
-    path('actors/', app.views.actors, name='actors'),
+    path('', app.views.actors, name='actors'),
     path('actor/<str:name>', app.views.actor, name='actor'),
     url(r'^favicon\.ico$', RedirectView.as_view(url='/static/icons/favicon.ico', permanent=True)),
-    url(r'^(?P<slug>[-\w]+)$', app.views.ActorDetail.as_view(), name='image'), 
+    #url(r'^(?P<slug>[-\w]+)$', app.views.ActorDetail.as_view(), name='image'), 
      
     # Auth related urls
     
