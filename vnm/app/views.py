@@ -1,5 +1,10 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-  
+from os import listdir
+from os.path import isfile, join
+
+from django.conf import settings
+
 from django.shortcuts import render
 from django.http import HttpRequest
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
@@ -20,6 +25,22 @@ def gallery(request):
         actors = paginator.page(paginator.num_pages) # If page is out of range (e.g.  9999), deliver last page of results.
 
     return render(request, 'gallery.html', { 'actors': list })
+
+
+def actors(request):
+    """this view loads data from local hd
+    """
+    actor_list = [f for f in listdir(settings.LOCAL_PATH) if not isfile(join(settings.LOCAL_PATH, f))]
+    return render(request, 'actors.twig', { 'actors': actor_list })
+
+
+def actor(request, name):
+    print(name)
+    images = []
+    return render(request, 'actor.twig', {
+        'images': images,
+    })
+
 
 class ActorDetail(DetailView):
      model = Actor

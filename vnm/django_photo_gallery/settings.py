@@ -147,3 +147,6 @@ STATICFILES_FINDERS = (
     'django.contrib.staticfiles.finders.AppDirectoriesFinder'
 )
 
+# don't move this line, otherwise this settings file will overwrite local
+# uncomment this line for local dev
+from .settings_local import *

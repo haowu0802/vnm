@@ -1,3 +1,5 @@
+from django.urls import path
+
 from django.conf.urls import url
 from django.contrib.auth import views
 from django.views.generic.base import RedirectView
@@ -13,9 +15,11 @@ from django.contrib import admin
 admin.autodiscover()
 
 urlpatterns = [
-    url(r'^$', app.views.gallery, name='gallery'),
+    path('', app.views.gallery, name='gallery'),
+    path('actors/', app.views.actors, name='actors'),
+    path('actor/<str:name>', app.views.actor, name='actor'),
     url(r'^favicon\.ico$', RedirectView.as_view(url='/static/icons/favicon.ico', permanent=True)),
-    url(r'^(?P<slug>[-\w]+)$', app.views.ActorDetail.as_view(), name='actor'), 
+    url(r'^(?P<slug>[-\w]+)$', app.views.ActorDetail.as_view(), name='image'), 
      
     # Auth related urls
     

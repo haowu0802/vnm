@@ -3,3 +3,4 @@
 *.sqlite3
 *.log
 media/
+settings_local.py

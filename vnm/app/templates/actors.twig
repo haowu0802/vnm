@@ -1,0 +1,37 @@
+{% extends "layout.html" %}
+{% load static %}
+
+{% block content %}
+
+<div class="container">
+    <div class="row">
+        {% for name in actors %}
+
+        <div class="col">
+            <div class="card dpg-album-card">
+                <div class="card-content">
+                    <a href={% url 'actor' name %}>
+                        <span class="card-title">{{ name }}</span>
+                    </a>
+                </div>
+            </div>
+        </div>
+
+        {% endfor %}
+
+    </div>
+</div>
+
+<div class="pagination center">
+    <span class="step-links">
+        {% if actors.has_previous %}
+        <a href="?page={{ actors.previous_page_number }}" class="waves-effect waves-light btn btn-large">Previous</a>
+        {% endif %}
+
+        {% if actors.has_next %}
+        <a href="?page={{ actors.next_page_number }}" class="waves-effect waves-light btn btn-large">Next</a>
+        {% endif %}
+    </span>
+</div>
+
+{% endblock %}
