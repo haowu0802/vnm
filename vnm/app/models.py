@@ -30,5 +30,8 @@ class ActorImage(models.Model):
     height = models.IntegerField(default=992)
     filename = models.CharField(max_length=256, null=True, blank=True)
 
+    class Meta:
+        ordering = ['-created']
+
     def __str__(self):
         return f'{self.filename}'

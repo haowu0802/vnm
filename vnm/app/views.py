@@ -54,9 +54,18 @@ def actor(request, name):
             photo.image.save(basename(filepath), content=File(open(filepath, 'rb')))
             photo.save()
 
+    images = ActorImage.objects.filter(actor=act)
+
+    # ordering
+    sort = request.GET.get('sort')
+
+    if sort:
+        images = images.order_by(sort),
+        images = images[0]
+
     return render(request, 'actor.twig', {
         'actor': act,
-        'images': ActorImage.objects.filter(actor=act).all(),
+        'images': images,
     })
 
 
