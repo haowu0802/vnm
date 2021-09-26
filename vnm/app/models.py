@@ -11,7 +11,7 @@ from imagekit.processors import ResizeToFit, ResizeToFill
 
 
 class Thumbnail(ImageSpec):
-    processors = [ResizeToFill(200, 200)]
+    processors = [ResizeToFill(300, 300)]
     format = 'JPEG'
     options = {'quality': 60}
 
