@@ -78,6 +78,11 @@ def actor(request, name):
 def story(request, story_id):
     story = get_object_or_404(Story, pk=story_id)
 
+    # refresh story
+    refresh = request.GET.get('refresh')
+    if refresh:
+        ActorImageLocal.objects.filter(story=story).all().delete()
+
     # get local image path from settings and fetch file list
     dir_path = story.filepath
     file_list = [f for f in listdir(dir_path) if isfile(join(dir_path, f))]
@@ -89,10 +94,11 @@ def story(request, story_id):
 
     # ordering
     sort = request.GET.get('sort')
-
     if sort:
         images = images.order_by(sort),
         images = images[0]
+
+
 
     return render(request, 'actor.twig', {
         'story': story,
