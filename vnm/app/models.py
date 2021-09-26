@@ -32,7 +32,7 @@ class Actor(models.Model):
 
 class Story(models.Model):
     name = models.CharField(max_length=128)
-    actor = models.ForeignKey('actor', on_delete=models.PROTECT, null=True)
+    actor = models.ForeignKey('actor', on_delete=models.CASCADE, null=True)
     thumb = models.ImageField(upload_to='thumb', null=True)
     filepath = models.CharField(max_length=1024, null=True, blank=True)
     created = models.DateTimeField(auto_now_add=True)
@@ -51,7 +51,7 @@ class ActorImage(models.Model):
         processors=[ResizeToFill(400, 400)],
         format='JPEG',
         options={'quality': 50})
-    actor = models.ForeignKey('actor', on_delete=models.PROTECT, null=True)
+    actor = models.ForeignKey('actor', on_delete=models.CASCADE, null=True)
     created = models.DateTimeField(auto_now_add=True)
     width = models.IntegerField(default=1768)
     height = models.IntegerField(default=992)
@@ -66,7 +66,7 @@ class ActorImage(models.Model):
 
 class ActorImageLocal(models.Model):
     thumb = models.ImageField(upload_to='thumb', null=True)
-    story = models.ForeignKey('story', on_delete=models.PROTECT, null=True)
+    story = models.ForeignKey('story', on_delete=models.CASCADE, null=True)
     created = models.DateTimeField(auto_now_add=True)
     width = models.IntegerField(default=1768)
     height = models.IntegerField(default=992)

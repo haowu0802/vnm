@@ -1,17 +1,18 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-  
 from os import listdir
-from os.path import isfile, join, getmtime, basename
+from os.path import isfile, join, getmtime, basename, exists
 
 from PIL import Image
 
 from django.conf import settings
-from django.shortcuts import render, get_object_or_404
-from django.http import HttpRequest, FileResponse
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
-from django.views.generic import DetailView
 from django.core.files import File
 from django.core.files.images import ImageFile
+from django.http import HttpRequest, FileResponse
+from django.shortcuts import render, get_object_or_404, redirect
+from django.views.generic import DetailView
+from django.urls import reverse
 
 from app.models import Actor, ActorImage, ActorImageLocal, Story
 
@@ -89,6 +90,10 @@ def story(request, story_id):
 
     # get local image path from settings and fetch file list
     dir_path = story.filepath
+    if not exists(dir_path):
+        story.delete()
+        return redirect(reverse('actor', kwargs={'name': story.actor.name}))
+
     file_list = [f for f in listdir(dir_path) if isfile(join(dir_path, f))]
     for filename in file_list:
         filepath = join(dir_path, filename)
