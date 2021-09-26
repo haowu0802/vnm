@@ -16,10 +16,6 @@
                 <a href={% url 'story' prev.id %} class="btn left"><</a>
             {% endif %}
 
-            {% if next %}
-                <a href={% url 'story' next.id %} class="btn left">></a>
-            {% endif %}
-
             <a href="{{ request.path }}?sort=-created" class="btn right">Date</a>
             <a href="{{ request.path }}?sort=filepath" class="btn right">Name</a>
         </header>
@@ -33,7 +29,13 @@
                     {% endfor %}
                 </div>
             </div>
-            <a href="{{ request.path }}?refresh=True" class="btn left">Refresh</a>
+
+            {% if next %}
+                <a href={% url 'story' next.id %} class="btn left">></a>
+            {% endif %}
+
+            <a href="{{ request.path }}?refresh=True" class="btn right">Refresh</a>
+
         </section>
 
     </article>
