@@ -12,6 +12,9 @@
                 <div class="card-content">
                     <a href={% url 'story' story.id %}>
                         <span class="card-title">{{ story.name }}</span>
+                        {% if story.thumb %}
+                            <img src="{{ story.thumb.url }}" class="responsive-img dpg-album-image"/>
+                        {% endif %}
                     </a>
                 </div>
             </div>

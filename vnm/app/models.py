@@ -90,5 +90,9 @@ class ActorImageLocal(models.Model):
                 result,
             )
             print(f"Thumbnail generated - {self.thumb}")
+            # populate story thumb
+            if not self.story.thumb:
+                self.story.thumb = self.thumb
+                self.story.save()
             return
         super(ActorImageLocal, self).save(*args, **kwargs)

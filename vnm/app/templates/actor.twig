@@ -10,7 +10,7 @@
 
     <article class="row">
         <header class="col s12 m12 l10 offset-l1">
-            <h1>{{ story.name }}</h1>
+            <h1><a href={% url 'actor' story.actor.name %}>{{ story.actor.name }}</a> - {{ story.name }}</h1>
             <a href="{{ request.path }}?sort=-created" class="btn right">Date</a>
             <a href="{{ request.path }}?sort=filepath" class="btn right">Name</a>
         </header>
