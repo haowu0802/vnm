@@ -6,14 +6,22 @@ from os.path import isfile, join, getmtime, basename
 from PIL import Image
 
 from django.conf import settings
-
-from django.shortcuts import render
-from django.http import HttpRequest
+from django.shortcuts import render, get_object_or_404
+from django.http import HttpRequest, FileResponse
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 from django.views.generic import DetailView
 from django.core.files import File
+from django.core.files.images import ImageFile
 
-from app.models import Actor, ActorImage
+from app.models import Actor, ActorImage, ActorImageLocal
+
+
+def image(request, image_id):
+    file = get_object_or_404(ActorImageLocal, pk=image_id)
+    img = open(file.filepath, 'rb')
+    response = FileResponse(img)
+    return response
+
 
 def actors(request):
     """loads list of available image sets from a local path
@@ -39,22 +47,21 @@ def actor(request, name):
     for filename in file_list:
         filepath = join(dir_path, filename)
 
-        if not ActorImage.objects.filter(filename=filename).exists():
+        if not ActorImageLocal.objects.filter(filepath=filepath).exists():
             # get image dim
             im = Image.open(filepath)
             width, height = im.size
             # instantiate
-            photo = ActorImage(
-                filename=filename,
+            photo = ActorImageLocal(
+                filepath=filepath,
                 actor=act,
                 width=width,
                 height=height,
                 created=getmtime(filepath),
             )
-            photo.image.save(basename(filepath), content=File(open(filepath, 'rb')))
             photo.save()
 
-    images = ActorImage.objects.filter(actor=act)
+    images = ActorImageLocal.objects.filter(actor=act)
 
     # ordering
     sort = request.GET.get('sort')

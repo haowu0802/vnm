@@ -105,7 +105,7 @@
         window.djangoAlbumImages = [
             {% for item in images %}
                 {
-                    src: '{{ item.image.url }}',
+                    src: '{% url "image" item.id %}',
                     w:  {{ item.width }},
                     h:  {{ item.height }}
                 },

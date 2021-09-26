@@ -1,9 +1,20 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*- 
 import uuid
+import os
+
 from django.db import models
+
+from imagekit import ImageSpec
 from imagekit.models import ProcessedImageField, ImageSpecField
 from imagekit.processors import ResizeToFit, ResizeToFill
+
+
+class Thumbnail(ImageSpec):
+    processors = [ResizeToFill(200, 200)]
+    format = 'JPEG'
+    options = {'quality': 60}
+
 
 class Actor(models.Model):
     name = models.CharField(max_length=128)
@@ -35,3 +46,33 @@ class ActorImage(models.Model):
 
     def __str__(self):
         return f'{self.filename}'
+
+
+class ActorImageLocal(models.Model):
+    thumb =models.ImageField(upload_to='thumb', null=True)
+    actor = models.ForeignKey('actor', on_delete=models.PROTECT, null=True)
+    created = models.DateTimeField(auto_now_add=True)
+    width = models.IntegerField(default=1768)
+    height = models.IntegerField(default=992)
+    filepath = models.CharField(max_length=1024, null=True, blank=True)
+
+    class Meta:
+        ordering = ['-created']
+
+    def __str__(self):
+        return f'{self.filepath}'
+
+    def save(self, *args, **kwargs):
+        # check empty and generate thumbnail from original image file
+        if not self.thumb:
+            print(f"Generating thumbnail for - {self.filepath} ")
+            source_file = open(self.filepath, 'rb')
+            image_generator = Thumbnail(source=source_file)
+            result = image_generator.generate()
+            self.thumb.save(
+                os.path.join('tmp', os.path.basename(self.filepath)), 
+                result,
+            )
+            print(f"Thumbnail generated - {self.thumb}")
+            return
+        super(ActorImageLocal, self).save(*args, **kwargs)

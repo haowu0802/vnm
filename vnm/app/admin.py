@@ -12,7 +12,7 @@ from django.core.files.base import ContentFile
 
 from PIL import Image
 
-from app.models import Actor, ActorImage
+from app.models import Actor, ActorImage, ActorImageLocal
 from app.forms import ActorForm
 
 @admin.register(Actor)
@@ -30,6 +30,13 @@ class ActorModelAdmin(admin.ModelAdmin):
 # In case image should be removed from Actor.
 @admin.register(ActorImage)
 class ActorImageModelAdmin(admin.ModelAdmin):
+    #list_display = ('actor', )
+    #list_filter = ('actor', 'created')
+    pass
+
+
+@admin.register(ActorImageLocal)
+class ActorImageLocalModelAdmin(admin.ModelAdmin):
     #list_display = ('actor', )
     #list_filter = ('actor', 'created')
     pass

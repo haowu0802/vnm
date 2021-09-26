@@ -147,6 +147,8 @@ STATICFILES_FINDERS = (
     'django.contrib.staticfiles.finders.AppDirectoriesFinder'
 )
 
+DATA_UPLOAD_MAX_NUMBER_FIELDS = 10240
+
 # don't move this line, otherwise this settings file will overwrite local
 # uncomment this line for local dev
 from .settings_local import *
