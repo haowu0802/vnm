@@ -12,7 +12,7 @@ from django.core.files.base import ContentFile
 
 from PIL import Image
 
-from app.models import Actor, ActorImage, ActorImageLocal
+from app.models import Actor, ActorImage, ActorImageLocal, Story
 from app.forms import ActorForm
 
 @admin.register(Actor)
@@ -37,6 +37,13 @@ class ActorImageModelAdmin(admin.ModelAdmin):
 
 @admin.register(ActorImageLocal)
 class ActorImageLocalModelAdmin(admin.ModelAdmin):
+    #list_display = ('actor', )
+    #list_filter = ('actor', 'created')
+    pass
+
+
+@admin.register(Story)
+class StoryModelAdmin(admin.ModelAdmin):
     #list_display = ('actor', )
     #list_filter = ('actor', 'created')
     pass

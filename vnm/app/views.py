@@ -13,7 +13,23 @@ from django.views.generic import DetailView
 from django.core.files import File
 from django.core.files.images import ImageFile
 
-from app.models import Actor, ActorImage, ActorImageLocal
+from app.models import Actor, ActorImage, ActorImageLocal, Story
+
+
+def create_image(story, filepath):
+    if not ActorImageLocal.objects.filter(filepath=filepath).exists():
+        # get image dim
+        im = Image.open(filepath)
+        width, height = im.size
+        # instantiate
+        photo = ActorImageLocal(
+            filepath=filepath,
+            story=story,
+            width=width,
+            height=height,
+            created=getmtime(filepath),
+        )
+        photo.save()
 
 
 def image(request, image_id):
@@ -41,27 +57,35 @@ def actor(request, name):
 
     # get local image path from settings and fetch file list
     dir_path = join(settings.LOCAL_PATH, name)
-    file_list = [f for f in listdir(dir_path) if isfile(join(dir_path, f))]
+    dir_list = [f for f in listdir(dir_path) if not isfile(join(dir_path, f))]
 
-    # create image objects
-    for filename in file_list:
-        filepath = join(dir_path, filename)
-
-        if not ActorImageLocal.objects.filter(filepath=filepath).exists():
-            # get image dim
-            im = Image.open(filepath)
-            width, height = im.size
-            # instantiate
-            photo = ActorImageLocal(
+    # create story objects
+    for storyname in dir_list:
+        filepath = join(dir_path, storyname)
+        if not Story.objects.filter(filepath=filepath).exists():
+            story = Story(
+                name=storyname,
                 filepath=filepath,
                 actor=act,
-                width=width,
-                height=height,
                 created=getmtime(filepath),
             )
-            photo.save()
+            story.save()
 
-    images = ActorImageLocal.objects.filter(actor=act)
+    story_list = Story.objects.filter(actor=act).all()
+    return render(request, 'stories.twig', { 'stories': story_list })
+
+
+def story(request, story_id):
+    story = get_object_or_404(Story, pk=story_id)
+
+    # get local image path from settings and fetch file list
+    dir_path = story.filepath
+    file_list = [f for f in listdir(dir_path) if isfile(join(dir_path, f))]
+    for filename in file_list:
+        filepath = join(dir_path, filename)
+        create_image(story, filepath)
+
+    images = ActorImageLocal.objects.filter(story=story)
 
     # ordering
     sort = request.GET.get('sort')
@@ -71,7 +95,7 @@ def actor(request, name):
         images = images[0]
 
     return render(request, 'actor.twig', {
-        'actor': act,
+        'story': story,
         'images': images,
     })
 

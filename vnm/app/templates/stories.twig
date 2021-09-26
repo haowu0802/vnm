@@ -1,0 +1,25 @@
+{% extends "layout.html" %}
+{% load static %}
+
+{% block content %}
+
+<div class="container">
+    <div class="row">
+        {% for story in stories %}
+
+        <div class="col">
+            <div class="card dpg-album-card">
+                <div class="card-content">
+                    <a href={% url 'story' story.id %}>
+                        <span class="card-title">{{ story.name }}</span>
+                    </a>
+                </div>
+            </div>
+        </div>
+
+        {% endfor %}
+
+    </div>
+</div>
+
+{% endblock %}

@@ -10,9 +10,9 @@
 
     <article class="row">
         <header class="col s12 m12 l10 offset-l1">
-            <h1>{{ actor.name }}</h1>
-            <a href="{{ request.path }}" class="btn right">Date</a>
-            <a href="{{ request.path }}?sort=filename" class="btn right">Name</a>
+            <h1>{{ story.name }}</h1>
+            <a href="{{ request.path }}?sort=-created" class="btn right">Date</a>
+            <a href="{{ request.path }}?sort=filepath" class="btn right">Name</a>
         </header>
         <section class="col s12 m12 l10 offset-l1">
             <div class="container">

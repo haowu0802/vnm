@@ -29,6 +29,22 @@ class Actor(models.Model):
     def __str__(self):
         return self.name
 
+
+class Story(models.Model):
+    name = models.CharField(max_length=128)
+    actor = models.ForeignKey('actor', on_delete=models.PROTECT, null=True)
+    thumb = models.ImageField(upload_to='thumb', null=True)
+    filepath = models.CharField(max_length=1024, null=True, blank=True)
+    created = models.DateTimeField(auto_now_add=True)
+    modified = models.DateTimeField(auto_now_add=True)
+
+    class Meta:
+        ordering = ['-created']
+
+    def __str__(self):
+        return f"{self.actor.name} - {self.name}" 
+
+
 class ActorImage(models.Model):
     image = models.ImageField(upload_to='images', null=True)
     thumb = ImageSpecField(source='image',
@@ -49,15 +65,15 @@ class ActorImage(models.Model):
 
 
 class ActorImageLocal(models.Model):
-    thumb =models.ImageField(upload_to='thumb', null=True)
-    actor = models.ForeignKey('actor', on_delete=models.PROTECT, null=True)
+    thumb = models.ImageField(upload_to='thumb', null=True)
+    story = models.ForeignKey('story', on_delete=models.PROTECT, null=True)
     created = models.DateTimeField(auto_now_add=True)
     width = models.IntegerField(default=1768)
     height = models.IntegerField(default=992)
     filepath = models.CharField(max_length=1024, null=True, blank=True)
 
     class Meta:
-        ordering = ['-created']
+        ordering = ['filepath']
 
     def __str__(self):
         return f'{self.filepath}'
