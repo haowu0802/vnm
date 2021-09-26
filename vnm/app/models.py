@@ -39,7 +39,7 @@ class Story(models.Model):
     modified = models.DateTimeField(auto_now_add=True)
 
     class Meta:
-        ordering = ['-created']
+        ordering = ['filepath']
 
     def __str__(self):
         return f"{self.actor.name} - {self.name}" 

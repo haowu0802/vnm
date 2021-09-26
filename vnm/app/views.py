@@ -15,6 +15,8 @@ from django.core.files.images import ImageFile
 
 from app.models import Actor, ActorImage, ActorImageLocal, Story
 
+from next_prev import next_in_order, prev_in_order
+
 
 def create_image(story, filepath):
     if not ActorImageLocal.objects.filter(filepath=filepath).exists():
@@ -81,6 +83,8 @@ def story(request, story_id):
     # refresh story
     refresh = request.GET.get('refresh')
     if refresh:
+        story.thumb = None
+        story.save()
         ActorImageLocal.objects.filter(story=story).all().delete()
 
     # get local image path from settings and fetch file list
@@ -98,11 +102,15 @@ def story(request, story_id):
         images = images.order_by(sort),
         images = images[0]
 
-
+    story_list = Story.objects.filter(actor=story.actor).order_by('filepath')
+    story_prev = prev_in_order(story, qs=story_list)
+    story_next = next_in_order(story, qs=story_list)
 
     return render(request, 'actor.twig', {
         'story': story,
         'images': images,
+        'prev': story_prev,
+        'next': story_next,
     })
 
 
