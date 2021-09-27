@@ -100,6 +100,10 @@ def story(request, story_id):
         create_image(story, filepath)
 
     images = ActorImageLocal.objects.filter(story=story)
+    for image in images:
+        if not exists(image.filepath):
+            image.delete()
+    images = ActorImageLocal.objects.filter(story=story)
 
     # ordering
     sort = request.GET.get('sort')
