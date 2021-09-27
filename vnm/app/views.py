@@ -9,10 +9,12 @@ from django.conf import settings
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 from django.core.files import File
 from django.core.files.images import ImageFile
+from django.db.models.functions import Lower
 from django.http import HttpRequest, FileResponse
 from django.shortcuts import render, get_object_or_404, redirect
 from django.views.generic import DetailView
 from django.urls import reverse
+
 
 from app.models import Actor, ActorImage, ActorImageLocal, Story
 
@@ -103,7 +105,7 @@ def story(request, story_id):
     for image in images:
         if not exists(image.filepath):
             image.delete()
-    images = ActorImageLocal.objects.filter(story=story)
+    images = ActorImageLocal.objects.filter(story=story).order_by(Lower('filepath'))
 
     # ordering
     sort = request.GET.get('sort')
