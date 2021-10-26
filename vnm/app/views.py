@@ -140,13 +140,14 @@ def viewer(request, image_id):
     story = image.story
     
     # get images with default sort (filename)
-    images = ActorImageLocal.objects.filter(story=story).exclude(filepath__contains="+").order_by(Lower('filepath'))
+    images = ActorImageLocal.objects.filter(story=story).exclude(filepath__contains="+").order_by('filepath')
     # ordering
     sort = request.GET.get('sort')
     if sort:
         images = images.order_by(sort),
         images = images[0]
     # get prev and next image
+    print(images)
     image_prev = prev_in_order(image, qs=images)
     image_next = next_in_order(image, qs=images)
 
