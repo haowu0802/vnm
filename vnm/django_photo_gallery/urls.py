@@ -19,6 +19,8 @@ urlpatterns = [
     path('image/<int:image_id>', app.views.image, name='image'),
     path('actor/<str:name>', app.views.actor, name='actor'),
     path('story/<int:story_id>', app.views.story, name='story'),
+    path('viewer/<int:image_id>', app.views.viewer, name='viewer'),
+    path('imageframe/<int:image_id>', app.views.imageframe, name='imageframe'),
     url(r'^favicon\.ico$', RedirectView.as_view(url='/static/icons/favicon.ico', permanent=True)),
     #url(r'^(?P<slug>[-\w]+)$', app.views.ActorDetail.as_view(), name='image'), 
      

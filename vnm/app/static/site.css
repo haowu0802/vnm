@@ -1,4 +1,10 @@
-﻿/* Custom fonts */
+﻿.frameviewer {
+    display:inline-block; 
+    width    : 49%;
+    height: 900px;
+}
+
+/* Custom fonts */
 @font-face {
   font-family: Ubuntu;
   src: local("Ubuntu"),
