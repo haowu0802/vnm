@@ -147,7 +147,6 @@ def viewer(request, image_id):
         images = images.order_by(sort),
         images = images[0]
     # get prev and next image
-    print(images)
     image_prev = prev_in_order(image, qs=images)
     image_next = next_in_order(image, qs=images)
 
