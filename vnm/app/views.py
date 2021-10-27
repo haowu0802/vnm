@@ -136,8 +136,9 @@ def story(request, story_id):
 def viewer(request, image_id):
     image = get_object_or_404(ActorImageLocal, pk=image_id)
     image_name = Path(image.filepath).stem
-    image_plus = ActorImageLocal.objects.filter(filepath__contains=image_name).filter(filepath__contains="+").first()
+
     story = image.story
+    image_plus = ActorImageLocal.objects.filter(story=story).filter(filepath__contains=image_name).filter(filepath__contains="+").first()
     
     # get images with default sort (filename)
     images = ActorImageLocal.objects.filter(story=story).exclude(filepath__contains="+").order_by('filepath')
