@@ -25,9 +25,14 @@ from next_prev import next_in_order, prev_in_order
 
 def create_image(story, filepath):
     if not ActorImageLocal.objects.filter(filepath=filepath).exists():
-        # get image dim
-        im = Image.open(filepath)
-        width, height = im.size
+        ext = Path(filepath).suffix
+        # video file skip dimentions
+        if ext in ['.mp4']:
+            width, height = 0, 0
+        else:
+            # get image dim
+            im = Image.open(filepath)
+            width, height = im.size
         # instantiate
         photo = ActorImageLocal(
             filepath=filepath,

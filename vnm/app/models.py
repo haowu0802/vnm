@@ -2,6 +2,7 @@
 # -*- coding: utf-8 -*- 
 import uuid
 import os
+from pathlib import Path
 
 from django.db import models
 
@@ -78,9 +79,17 @@ class ActorImageLocal(models.Model):
     def __str__(self):
         return f'{self.filepath}'
 
+    def is_video(self):
+        ext = Path(self.filepath).suffix
+        # video file skip dimentions
+        if ext in ['.mp4']:
+            return True
+        else:
+            return False
+
     def save(self, *args, **kwargs):
         # check empty and generate thumbnail from original image file
-        if not self.thumb:
+        if not self.thumb and not self.is_video():
             print(f"Generating thumbnail for - {self.filepath} ")
             source_file = open(self.filepath, 'rb')
             image_generator = Thumbnail(source=source_file)

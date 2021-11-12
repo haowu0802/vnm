@@ -4,6 +4,12 @@
     height: 900px;
 }
 
+.vid {
+    position: relative;
+    top: 50%;
+    transform: translateY(50%);
+}
+
 /* Custom fonts */
 @font-face {
   font-family: Ubuntu;

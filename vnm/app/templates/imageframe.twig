@@ -13,9 +13,16 @@
         <section class="col s12 m12 l10 offset-l1">
             <div class="container">
                 <div class="row">
-                    <a id="mainview" class="col s12 m3" href="javascript:pswpInit(0);">
-                        <img src={% url "image" image.id %} />
-                    </a>
+                    {% if image.is_video %}
+                        <video class="vid" width="640" height="360" controls muted loop autoplay>
+                            <source src={% url "image" image.id %} type="video/mp4">
+                            Your browser does not support the video tag.
+                        </video>
+                    {% else %}
+                        <a id="mainview" class="col s12 m3" href="javascript:pswpInit(0);">
+                            <img src={% url "image" image.id %} />
+                        </a>
+                    {% endif %}
                 </div>
             </div>
         </section>
