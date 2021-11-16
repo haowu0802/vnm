@@ -16,6 +16,7 @@
 
             <form action="{% url 'rnd' actor.id %}" method="get" class="center">
                 {% for cate in cate_list %}
+                    [
                     <label>
                         <input type="checkbox" 
                             class="filled-in checkbox-orange" 
@@ -24,9 +25,11 @@
                         />
                         <span>{{ cate }}</span>
                     </label>
+                    ]
                 {% endfor %}
                 ......
                 {% for cate in cate_list %}
+                    [
                     <label>
                         <input type="checkbox" 
                             class="filled-in checkbox-orange" 
@@ -35,8 +38,8 @@
                         />
                         <span>{{ cate }}</span>
                     </label>
+                    ]
                 {% endfor %}
-                ......
                 <input type="submit" class="btn right" value="RND">
             </form>
 
