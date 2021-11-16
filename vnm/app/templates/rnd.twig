@@ -14,7 +14,31 @@
                 {{ actor.name }}
             </a>
 
-            <a href="{% url 'rnd' actor.id %}?{{ request.GET.urlencode }}" class="btn right">RND</a>
+            <form action="{% url 'rnd' actor.id %}" method="get">
+                {% for cate in cate_list %}
+                    <label>
+                        <input type="checkbox" 
+                            class="filled-in checkbox-orange" 
+                            name="cl" value={{ cate }} 
+                            {% if cate in cl %} checked="checked" {% endif %}
+                        />
+                        <span>{{ cate }}</span>
+                    </label>
+                {% endfor %}
+                ......
+                {% for cate in cate_list %}
+                    <label>
+                        <input type="checkbox" 
+                            class="filled-in checkbox-orange" 
+                            name="cr" value={{ cate }} 
+                            {% if cate in cr %} checked="checked" {% endif %}
+                        />
+                        <span>{{ cate }}</span>
+                    </label>
+                {% endfor %}
+                ......
+                <input type="submit" class="btn right" value="RND">
+            </form>
 
         </div>
     </nav>

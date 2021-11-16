@@ -100,9 +100,11 @@ def rnd(request, actor_id):
     dir_path = join(settings.LOCAL_PATH, actor.name)
     # get cates
     cate_list = [f for f in listdir(dir_path) if not isfile(join(dir_path, f))]
+    cate_list_opt = []
     # create images in cates
     for cate in cate_list:
         if not '_' in cate:
+            cate_list_opt.append(cate)
             cate_dir = join(dir_path, cate)
             file_list = [f for f in listdir(cate_dir) if isfile(join(cate_dir, f))]
             for filename in file_list:
@@ -123,16 +125,20 @@ def rnd(request, actor_id):
     image_right = None
 
     # get cate from param
-    cate_string = request.GET.get('c')
-    if cate_string:
-        cate_left, cate_right = cate_string.split('_')
+    cate_left = request.GET.getlist('cl')
+    if cate_left:
         image_left = images_actor.filter(cate__in=list(cate_left)).order_by('?')[0]
+    cate_right = request.GET.getlist('cr')
+    if cate_right:
         image_right = images_actor.filter(cate__in=list(cate_right)).order_by('?')[0]
 
     return render(request, 'rnd.twig', { 
         'actor': actor,
         'image_left': image_left,
         'image_right': image_right,
+        'cate_list': cate_list_opt,
+        'cl': cate_left,
+        'cr': cate_right,
     })
 
 
