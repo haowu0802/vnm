@@ -18,6 +18,7 @@ urlpatterns = [
     path('', app.views.actors, name='actors'),
     path('image/<int:image_id>', app.views.image, name='image'),
     path('actor/<str:name>', app.views.actor, name='actor'),
+    path('rnd/<int:actor_id>', app.views.rnd, name='rnd'),
     path('story/<int:story_id>', app.views.story, name='story'),
     path('viewer/<int:image_id>', app.views.viewer, name='viewer'),
     path('imageframe/<int:image_id>', app.views.imageframe, name='imageframe'),

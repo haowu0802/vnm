@@ -39,6 +39,7 @@ class ActorImageModelAdmin(admin.ModelAdmin):
 class ActorImageLocalModelAdmin(admin.ModelAdmin):
     #list_display = ('actor', )
     #list_filter = ('actor', 'created')
+    ordering = ('-created',)
     pass
 
 

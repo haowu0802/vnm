@@ -68,10 +68,12 @@ class ActorImage(models.Model):
 class ActorImageLocal(models.Model):
     thumb = models.ImageField(upload_to='thumb', null=True)
     story = models.ForeignKey('story', on_delete=models.CASCADE, null=True)
+    actor = models.ForeignKey('actor', on_delete=models.CASCADE, null=True)
     created = models.DateTimeField(auto_now_add=True)
     width = models.IntegerField(default=1768)
     height = models.IntegerField(default=992)
     filepath = models.CharField(max_length=1024, null=True, blank=True)
+    cate = models.CharField(max_length=2, null=True, blank=True, default=None)
 
     class Meta:
         ordering = ['filepath']
@@ -89,7 +91,7 @@ class ActorImageLocal(models.Model):
 
     def save(self, *args, **kwargs):
         # check empty and generate thumbnail from original image file
-        if not self.thumb and not self.is_video():
+        if not self.thumb and not self.is_video() and self.story is not None:
             print(f"Generating thumbnail for - {self.filepath} ")
             source_file = open(self.filepath, 'rb')
             image_generator = Thumbnail(source=source_file)

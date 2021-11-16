@@ -23,7 +23,7 @@ from app.models import Actor, ActorImage, ActorImageLocal, Story
 from next_prev import next_in_order, prev_in_order
 
 
-def create_image(story, filepath):
+def create_image(story, filepath, actor=None, cate=None):
     if not ActorImageLocal.objects.filter(filepath=filepath).exists():
         ext = Path(filepath).suffix
         # video file skip dimentions
@@ -37,6 +37,8 @@ def create_image(story, filepath):
         photo = ActorImageLocal(
             filepath=filepath,
             story=story,
+            actor=actor,
+            cate=cate,
             width=width,
             height=height,
             created=getmtime(filepath),
@@ -84,7 +86,54 @@ def actor(request, name):
             story.save()
 
     story_list = Story.objects.filter(actor=act).all()
-    return render(request, 'stories.twig', { 'stories': story_list })
+    return render(request, 'stories.twig', { 
+        'stories': story_list,
+        'actor': act,
+    })
+
+
+# random pic viewer
+def rnd(request, actor_id):
+    # get actor
+    actor = get_object_or_404(Actor, pk=actor_id)
+    # ingest local files
+    dir_path = join(settings.LOCAL_PATH, actor.name)
+    # get cates
+    cate_list = [f for f in listdir(dir_path) if not isfile(join(dir_path, f))]
+    # create images in cates
+    for cate in cate_list:
+        if not '_' in cate:
+            cate_dir = join(dir_path, cate)
+            file_list = [f for f in listdir(cate_dir) if isfile(join(cate_dir, f))]
+            for filename in file_list:
+                filepath = join(cate_dir, filename)
+                create_image(None, filepath, actor, cate)
+
+    # remove deleted images
+    images = ActorImageLocal.objects.all()
+    for image in images:
+        if not exists(image.filepath):
+            image.delete()
+
+    # all images of actor
+    images_actor = ActorImageLocal.objects.filter(actor=actor)
+
+    # default
+    image_left = images_actor.order_by('?')[0]
+    image_right = None
+
+    # get cate from param
+    cate_string = request.GET.get('c')
+    if cate_string:
+        cate_left, cate_right = cate_string.split('_')
+        image_left = images_actor.filter(cate__in=list(cate_left)).order_by('?')[0]
+        image_right = images_actor.filter(cate__in=list(cate_right)).order_by('?')[0]
+
+    return render(request, 'rnd.twig', { 
+        'actor': actor,
+        'image_left': image_left,
+        'image_right': image_right,
+    })
 
 
 def story(request, story_id):

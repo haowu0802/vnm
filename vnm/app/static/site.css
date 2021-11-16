@@ -4,6 +4,12 @@
     height: 900px;
 }
 
+.frameviewer-one {
+    display:inline-block; 
+    width    : 100%;
+    height: 900px;
+}
+
 .vid {
     position: relative;
     top: 50%;
