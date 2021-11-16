@@ -10,11 +10,11 @@
     <nav role="navigation">
         <div class="nav-wrapper container">
 
-            <a id="logo-container" href="{% url 'actor' actor.name %}" class="center brand-logo">
+            <a id="logo-container" href="{% url 'actor' actor.name %}" class="left brand-logo">
                 {{ actor.name }}
             </a>
 
-            <form action="{% url 'rnd' actor.id %}" method="get">
+            <form action="{% url 'rnd' actor.id %}" method="get" class="center">
                 {% for cate in cate_list %}
                     <label>
                         <input type="checkbox" 
