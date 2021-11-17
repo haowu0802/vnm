@@ -132,6 +132,9 @@ def rnd(request, actor_id):
     if cate_right:
         image_right = images_actor.filter(cate__in=list(cate_right)).order_by('?')[0]
 
+    # get auto flag
+    auto = request.GET.get('auto')
+
     return render(request, 'rnd.twig', { 
         'actor': actor,
         'image_left': image_left,
@@ -139,6 +142,7 @@ def rnd(request, actor_id):
         'cate_list': cate_list_opt,
         'cl': cate_left,
         'cr': cate_right,
+        'auto': auto,
     })
 
 

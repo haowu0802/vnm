@@ -19,7 +19,7 @@
                     [
                     <label>
                         <input type="checkbox" 
-                            class="filled-in checkbox-orange" 
+                            class="filled-in" 
                             name="cl" value={{ cate }} 
                             {% if cate in cl %} checked="checked" {% endif %}
                         />
@@ -27,12 +27,12 @@
                     </label>
                     ]
                 {% endfor %}
-                ......
+                &emsp;&emsp;&emsp;
                 {% for cate in cate_list %}
                     [
                     <label>
                         <input type="checkbox" 
-                            class="filled-in checkbox-orange" 
+                            class="filled-in" 
                             name="cr" value={{ cate }} 
                             {% if cate in cr %} checked="checked" {% endif %}
                         />
@@ -40,7 +40,19 @@
                     </label>
                     ]
                 {% endfor %}
-                <input type="submit" class="btn right" value="RND">
+                &emsp;&emsp;&emsp;
+                <
+                <label>
+                    <input type="checkbox" 
+                        class="filled-in right" 
+                        id="auto" 
+                        name="auto"
+                        {% if auto %} checked="checked" {% endif %}
+                    />
+                    <span>AUTO</span>
+                </label>
+                >
+                <input id="rnd" type="submit" class="btn right" value="RND">
             </form>
 
         </div>
@@ -72,5 +84,13 @@
             //obj.style.height = obj.contentWindow.document.documentElement.scrollHeight + 'px';
             obj.style.height = '900px';
         }
+        function rnd() {
+            var isAuto = document.getElementById('auto').checked;
+            console.log(isAuto)
+            if (isAuto){
+                document.getElementById('rnd').click();
+            }
+        }
+        setInterval(rnd, 10000); 
     </script>
 {% endblock %}
