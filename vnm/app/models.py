@@ -91,7 +91,7 @@ class ActorImageLocal(models.Model):
 
     def save(self, *args, **kwargs):
         # check empty and generate thumbnail from original image file
-        if not self.thumb and not self.is_video() and self.story is not None:
+        if not self.thumb and not self.is_video():
             print(f"Generating thumbnail for - {self.filepath} ")
             source_file = open(self.filepath, 'rb')
             image_generator = Thumbnail(source=source_file)
@@ -102,7 +102,7 @@ class ActorImageLocal(models.Model):
             )
             print(f"Thumbnail generated - {self.thumb}")
             # populate story thumb
-            if not self.story.thumb:
+            if self.story and not self.story.thumb:
                 self.story.thumb = self.thumb
                 self.story.save()
             return

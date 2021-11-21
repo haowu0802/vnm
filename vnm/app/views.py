@@ -165,7 +165,7 @@ def story(request, story_id):
     file_list = [f for f in listdir(dir_path) if isfile(join(dir_path, f))]
     for filename in file_list:
         filepath = join(dir_path, filename)
-        create_image(story, filepath)
+        create_image(story, filepath, story.actor, story.name)
 
     # remove deleted images
     images = ActorImageLocal.objects.filter(story=story)
@@ -174,8 +174,8 @@ def story(request, story_id):
             image.delete()
 
     # get images without +
-    #images = ActorImageLocal.objects.filter(story=story).order_by(Lower('filepath'))
-    images = ActorImageLocal.objects.filter(story=story).exclude(filepath__contains="+").order_by(Lower('filepath'))
+    images = ActorImageLocal.objects.filter(actor=story.actor).filter(cate=story.name).order_by(Lower('filepath'))
+    #images = ActorImageLocal.objects.filter(story=story).exclude(filepath__contains="+").order_by(Lower('filepath'))
 
     # ordering
     sort = request.GET.get('sort')
@@ -202,10 +202,9 @@ def viewer(request, image_id):
     image_name = Path(image.filepath).stem
 
     story = image.story
-    image_plus = ActorImageLocal.objects.filter(story=story).filter(filepath__contains=image_name).filter(filepath__contains="+").first()
-    
+
     # get images with default sort (filename)
-    images = ActorImageLocal.objects.filter(story=story).exclude(filepath__contains="+").order_by('filepath')
+    images = ActorImageLocal.objects.filter(story=story).order_by('filepath')
     # ordering
     sort = request.GET.get('sort')
     if sort:
@@ -217,7 +216,6 @@ def viewer(request, image_id):
 
     return render(request, 'viewer.twig', {
         'image': image,
-        'image_plus': image_plus,
         'story': story,
         'actor': story.actor,
         'prev': image_prev,

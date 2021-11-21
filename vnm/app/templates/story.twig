@@ -25,7 +25,9 @@
                     {% for item in images %}
                     <a class="col s12 m3" href="{% url 'viewer' item.id %}?{{ request.GET.urlencode }} ">
                         {% if item.thumb %}
-                        <img src="{{ item.thumb.url }}" class="responsive-img dpg-album-image"/>
+                            <img src="{{ item.thumb.url }}" class="responsive-img dpg-album-image"/>
+                        {% else %}
+                            <a href="{% url 'viewer' item.id %}?{{ request.GET.urlencode }}"> {{ item.filepath }} </a>
                         {% endif %}
                     </a>
                     {% endfor %}
