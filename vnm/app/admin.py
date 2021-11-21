@@ -37,7 +37,7 @@ class ActorImageModelAdmin(admin.ModelAdmin):
 
 @admin.register(ActorImageLocal)
 class ActorImageLocalModelAdmin(admin.ModelAdmin):
-    #list_display = ('actor', )
+    list_display = ('filepath', 'created')
     #list_filter = ('actor', 'created')
     ordering = ('-created',)
     pass
