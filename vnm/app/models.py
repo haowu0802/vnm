@@ -90,6 +90,18 @@ class ActorImageLocal(models.Model):
             return False
 
     def save(self, *args, **kwargs):
+        # populate story
+        if not self.story:
+            storypath = os.path.dirname(self.filepath)
+            storyname = os.path.basename(storypath)
+            if not Story.objects.filter(filepath=storypath).exists():
+                story = Story(
+                    name=storyname,
+                    filepath=storypath,
+                    actor=self.actor,
+                    created=os.path.getmtime(storypath),
+                )
+                story.save()
         # check empty and generate thumbnail from original image file
         if not self.thumb and not self.is_video():
             print(f"Generating thumbnail for - {self.filepath} ")
@@ -101,6 +113,7 @@ class ActorImageLocal(models.Model):
                 result,
             )
             print(f"Thumbnail generated - {self.thumb}")
+            
             # populate story thumb
             if self.story and not self.story.thumb:
                 self.story.thumb = self.thumb
