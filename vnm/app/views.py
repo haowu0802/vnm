@@ -100,6 +100,7 @@ def rnd(request, actor_id):
     dir_path = join(settings.LOCAL_PATH, actor.name)
     # get cates
     cate_list = [f for f in listdir(dir_path) if not isfile(join(dir_path, f))]
+    cate_list.sort()
     cate_list_opt = []
     # create images in cates
     for cate in cate_list:
