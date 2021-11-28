@@ -27,7 +27,7 @@
                     </label>
                     ]
                 {% endfor %}
-                &emsp;&emsp;&emsp;
+                &emsp;&emsp;
                 {% for cate in cate_list %}
                     [
                     <label>
@@ -40,7 +40,7 @@
                     </label>
                     ]
                 {% endfor %}
-                &emsp;&emsp;&emsp;
+                &emsp;&emsp;
                 <
                 <label>
                     <input type="checkbox" 
@@ -51,8 +51,17 @@
                     />
                     <span>AUTO</span>
                 </label>
+                <label>
+                    <input type="checkbox" 
+                        class="filled-in right" 
+                        name="rightlock"
+                        value={{image_right.id}}
+                        {% if rightlock %} checked="checked" {% endif %}
+                    />
+                    <span>L</span>
+                </label>
                 >
-                <input id="rnd" type="submit" class="btn right" value="RND">
+                <input id="rnd" type="submit" class="btn right" value="?">
             </form>
 
         </div>
