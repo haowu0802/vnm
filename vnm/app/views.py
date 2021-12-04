@@ -141,6 +141,11 @@ def rnd(request, actor_id):
     # get auto flag
     auto = request.GET.get('auto')
 
+    # get time refresh
+    time_refresh = request.GET.get('time')
+    if not time_refresh:
+        time_refresh = 10
+
     return render(request, 'rnd.twig', { 
         'actor': actor,
         'image_left': image_left,
@@ -150,6 +155,7 @@ def rnd(request, actor_id):
         'cr': cate_right,
         'auto': auto,
         'rightlock': rightlock,
+        'time': time_refresh,
     })
 
 
