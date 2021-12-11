@@ -133,6 +133,10 @@ def rnd(request, actor_id):
     if cate_right:
         image_right = images_actor.filter(cate__in=list(cate_right)).order_by('?')[0]
 
+    sr = request.GET.getlist('sr')
+    if sr:
+        image_right = images_actor.filter(cate__in=list(sr)).order_by('?')[0]
+
     # locks
     rightlock = request.GET.getlist('rightlock')
     if rightlock:
@@ -153,6 +157,7 @@ def rnd(request, actor_id):
         'cate_list': cate_list_opt,
         'cl': cate_left,
         'cr': cate_right,
+        'sr': sr,
         'auto': auto,
         'rightlock': rightlock,
         'time': time_refresh,

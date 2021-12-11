@@ -27,6 +27,7 @@
                     |
                 {% endfor %}
                 &emsp;
+                {% comment %} 
                 {% for cate in cate_list %}
                     <label>
                         <input type="checkbox" 
@@ -38,6 +39,18 @@
                     </label>
                     |
                 {% endfor %}
+                {% endcomment %}
+
+
+                <div class="col s12 right">
+                    <select name="sr" class="browser-default col s12 right filled-in inline">
+                        {% for cate in cate_list %}
+                            <option value={{ cate }} {% if cate in sr %} selected {% endif %} >{{ cate }}</option>
+                        {% endfor %}
+                    </select>
+                </div>
+
+
 
                 <label>
                     <input type="checkbox" 
@@ -109,5 +122,8 @@
         }
         var timeRefresh = document.getElementById('time').value;
         setInterval(rnd, timeRefresh*1000); 
+        $(document).ready(function(){
+            $('select').formSelect();
+        });
     </script>
 {% endblock %}
