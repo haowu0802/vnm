@@ -16,6 +16,8 @@
 
             <form action="{% url 'rnd' actor.id %}" method="get" class="center">
                 {% for cate in cate_list %}
+                    {% if cate > '4' %}
+                    {% else %}
                     <label>
                         <input type="checkbox" 
                             class="filled-in" 
@@ -25,8 +27,11 @@
                         <span>{{ cate }}</span>
                     </label>
                     |
+                    {% endif %}
                 {% endfor %}
-                &emsp;
+                
+                &emsp;&emsp;&emsp;
+
                 {% comment %} 
                 {% for cate in cate_list %}
                     <label>
