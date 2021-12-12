@@ -3,6 +3,7 @@
 from os import listdir
 from os.path import isfile, join, getmtime, basename, exists
 from pathlib import Path
+import random
 
 from PIL import Image
 
@@ -92,6 +93,16 @@ def actor(request, name):
     })
 
 
+def get_exp_rnd(items):
+    ids = [i.id for i in items]
+    #print(ids)
+    ids_exp = []
+    for idx, id in enumerate(ids):
+        rep = int(idx / 2) + 1
+        ids_exp = ids_exp + [id] * rep
+    #print(ids_exp, )
+    return random.choice(ids_exp)
+
 # random pic viewer
 def rnd(request, actor_id):
     # get actor
@@ -128,14 +139,21 @@ def rnd(request, actor_id):
     # get cate from param
     cate_left = request.GET.getlist('cl')
     if cate_left:
-        image_left = images_actor.filter(cate__in=list(cate_left)).order_by('?')[0]
+        image_left_pool = images_actor.filter(cate__in=list(cate_left)).order_by('id')#('?')[0]
+        exp_rnd_id_l = get_exp_rnd(image_left_pool)
+        image_left = images_actor.get(id=exp_rnd_id_l)
+
     cate_right = request.GET.getlist('cr')
     if cate_right:
-        image_right = images_actor.filter(cate__in=list(cate_right)).order_by('?')[0]
+        image_right_pool = images_actor.filter(cate__in=list(cate_right)).order_by('id')
+        exp_rnd_id_r = get_exp_rnd(image_right_pool)
+        image_right = images_actor.get(id=exp_rnd_id_r)
 
     sr = request.GET.getlist('sr')
     if sr:
-        image_right = images_actor.filter(cate__in=list(sr)).order_by('?')[0]
+        image_right_pool = images_actor.filter(cate__in=list(sr)).order_by('id')#('?')[0]
+        exp_rnd_id = get_exp_rnd(image_right_pool)
+        image_right = images_actor.get(id=exp_rnd_id)
 
     # locks
     rightlock = request.GET.getlist('rightlock')
