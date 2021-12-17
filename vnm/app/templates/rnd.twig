@@ -95,13 +95,21 @@
     <article class="row">
 
         {% if image_right %}
+
+            {% if image_left %}
             <div class="frameviewer">
                 <iframe src={% url 'imageframe' image_left.id %} frameborder="0" scrolling="no" width="100%" onload="resizeIframe(this)" align="left"></iframe>
             </div>
-
             <div class="frameviewer">
                 <iframe src={% url 'imageframe' image_right.id %} frameborder="0" scrolling="no" width="100%" onload="resizeIframe(this)" align="right"> </iframe>
             </div>
+
+            {% else %}
+            <div class="frameviewer-one">
+                <iframe src={% url 'imageframe' image_right.id %} frameborder="0" scrolling="no" width="100%" onload="resizeIframe(this)"> </iframe>
+            </div>
+            {% endif %}
+
         {% else %}
             <div class="frameviewer-one">
                 <iframe src={% url 'imageframe' image_left.id %} frameborder="0" scrolling="no" width="100%" onload="resizeIframe(this)" ></iframe>

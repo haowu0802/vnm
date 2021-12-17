@@ -136,8 +136,8 @@ def rnd(request, actor_id):
     images_actor = ActorImageLocal.objects.filter(actor=actor)
 
     # default
-    image_left = images_actor.order_by('?')[0]
-    image_right = None
+    image_left = None
+    image_right = images_actor.order_by('?')[0]
 
     # get cate from param
     cate_left = request.GET.getlist('cl')
