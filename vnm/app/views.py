@@ -2,6 +2,7 @@
 # -*- coding: utf-8 -*-  
 from os import listdir
 from os.path import isfile, join, getmtime, basename, exists
+from datetime import datetime
 from pathlib import Path
 import random
 
@@ -26,6 +27,7 @@ from next_prev import next_in_order, prev_in_order
 
 def create_image(story, filepath, actor=None, cate=None):
     if not ActorImageLocal.objects.filter(filepath=filepath).exists():
+        #print(datetime.fromtimestamp(getmtime(filepath)))
         ext = Path(filepath).suffix
         # video file skip dimentions
         if ext in ['.mp4']:
@@ -42,7 +44,7 @@ def create_image(story, filepath, actor=None, cate=None):
             cate=cate,
             width=width,
             height=height,
-            created=getmtime(filepath),
+            modified=datetime.fromtimestamp(getmtime(filepath)),
         )
         photo.save()
 
@@ -97,8 +99,9 @@ def get_exp_rnd(items):
     ids = [i.id for i in items]
     #print(ids)
     ids_exp = []
+    factor = 3
     for idx, id in enumerate(ids):
-        rep = int(idx / 2) + 1
+        rep = int(idx / factor) + 1
         ids_exp = ids_exp + [id] * rep
     #print(ids_exp, )
     return random.choice(ids_exp)
@@ -139,19 +142,19 @@ def rnd(request, actor_id):
     # get cate from param
     cate_left = request.GET.getlist('cl')
     if cate_left:
-        image_left_pool = images_actor.filter(cate__in=list(cate_left)).order_by('id')#('?')[0]
+        image_left_pool = images_actor.filter(cate__in=list(cate_left)).order_by('modified')#('?')[0]
         exp_rnd_id_l = get_exp_rnd(image_left_pool)
         image_left = images_actor.get(id=exp_rnd_id_l)
 
     cate_right = request.GET.getlist('cr')
     if cate_right:
-        image_right_pool = images_actor.filter(cate__in=list(cate_right)).order_by('id')
+        image_right_pool = images_actor.filter(cate__in=list(cate_right)).order_by('modified')
         exp_rnd_id_r = get_exp_rnd(image_right_pool)
         image_right = images_actor.get(id=exp_rnd_id_r)
 
     sr = request.GET.getlist('sr')
     if sr:
-        image_right_pool = images_actor.filter(cate__in=list(sr)).order_by('id')#('?')[0]
+        image_right_pool = images_actor.filter(cate__in=list(sr)).order_by('modified')#('?')[0]
         exp_rnd_id = get_exp_rnd(image_right_pool)
         image_right = images_actor.get(id=exp_rnd_id)
 

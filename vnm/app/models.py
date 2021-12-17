@@ -70,6 +70,7 @@ class ActorImageLocal(models.Model):
     story = models.ForeignKey('story', on_delete=models.CASCADE, null=True)
     actor = models.ForeignKey('actor', on_delete=models.CASCADE, null=True)
     created = models.DateTimeField(auto_now_add=True)
+    modified = models.DateTimeField(null=True)
     width = models.IntegerField(default=1768)
     height = models.IntegerField(default=992)
     filepath = models.CharField(max_length=1024, null=True, blank=True)
