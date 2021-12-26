@@ -99,7 +99,7 @@ def get_exp_rnd(items):
     ids = [i.id for i in items]
     #print(ids)
     ids_exp = []
-    factor = 3
+    factor = len(ids) / 4
     for idx, id in enumerate(ids):
         rep = int(idx / factor) + 1
         ids_exp = ids_exp + [id] * rep
@@ -154,7 +154,9 @@ def rnd(request, actor_id):
 
     sr = request.GET.getlist('sr')
     if sr:
-        image_right_pool = images_actor.filter(cate__in=list(sr)).order_by('modified')#('?')[0]
+        sr_plus = sr[::]
+        sr_plus.append('-new')
+        image_right_pool = images_actor.filter(cate__in=list(sr_plus)).order_by('modified')#('?')[0]
         exp_rnd_id = get_exp_rnd(image_right_pool)
         image_right = images_actor.get(id=exp_rnd_id)
 
